@@ -1,0 +1,1 @@
+Based on Express-generator, https://github.com/Microsoft/TypeScript-Node-Starter and custom tweaks.

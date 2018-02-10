@@ -13,16 +13,48 @@
   },
   "homepage": "https://github.com/pablooliva/ch.ckl.st-server#readme",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node dist/bin/www",
+    "build": "npm run build-ts && npm run tslint && npm run copy-static-assets",
+    "build-ts": "tsc",
+    "dev": "ts-node ./dist/bin/www",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch-ts": "tsc -w",
+    "watch-node": "nodemon dist/bin/www",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "copy-static-assets": "ts-node copyStaticAssets.ts",
+    "debug": "npm run build && npm run watch-debug",
+    "serve-debug": "nodemon --inspect dist/bin/www",
+    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
   },
   "dependencies": {
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^5.0.0",
     "express": "~4.15.5",
     "fs": "0.0.1-security",
     "hbs": "~4.0.1",
+    "mongoose": "5.0.1",
     "morgan": "~1.9.0",
     "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/dotenv": "^4.0.2",
+    "@types/express": "^4.11.1",
+    "@types/jasmine": "^2.8.6",
+    "@types/mongodb": "^3.0.5",
+    "@types/mongoose": "^5.0.1",
+    "@types/morgan": "^1.7.35",
+    "@types/node": "^9.4.4",
+    "@types/serve-favicon": "^2.2.30",
+    "@types/shelljs": "^0.7.8",
+    "concurrently": "^3.5.1",
+    "nodemon": "^1.14.12",
+    "shelljs": "^0.8.1",
+    "ts-node": "^4.1.0",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1"
   }
 }
