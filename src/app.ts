@@ -1,18 +1,22 @@
-var express = require('express');
-var fs = require('fs');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+import * as express from "express";
+import * as fs from "fs";
+import * as path from "path";
+import * as favicon from "serve-favicon";
+import * as logger from "morgan";
+import * as cookieParser from "cookie-parser";
+import * as bodyParser from "body-parser";
+import * as dotenv from "dotenv";
 
-var appRoutes = require("./routes/app");
+// Load environment variables from .env file, where API keys and passwords are configured
+dotenv.config({ path: ".env" });
 
-var app = express();
+let appRoutes = require("./routes/app");
+
+const app = express();
 
 app.set("views", path.join(__dirname, "public"));
 app.set("view engine", "html");
-app.engine("html", function(path, options, cb) {
+app.engine("html", function(path: any, options: any, cb: any) {
     fs.readFile(path, 'utf-8', cb);
 });
 
