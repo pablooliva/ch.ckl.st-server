@@ -1,10 +1,16 @@
-import app from "./app";
+import { App } from "./config/express";
+import { Logger } from "./config/logger";
 
+const log = Logger.log();
+const app = new App().express;
 const port = process.env.PORT || 3000;
 
 app.listen(port, (err: Error) => {
     if (err) {
-        return console.log(err);
+        return log.error(err.toString());
     }
-    return console.log(`server is listening on ${port}`);
+    log.info(`
+        Express server listening on port ${port}.
+        Environment: ${process.env.NODE_ENV}
+    `);
 });
