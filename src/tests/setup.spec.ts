@@ -1,6 +1,4 @@
 /*
-process.env.NODE_ENV = "test";
-
 import "mocha";
 import { IUser, model as User } from "../models/user";
 import * as Task from "../models/task";
@@ -41,6 +39,4 @@ export const cleanCollections = (): Promise<any> => {
         // Add more
     ];
     return Promise.all(cleanUp);
-};
-
-*/
+};*/
