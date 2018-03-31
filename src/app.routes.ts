@@ -1,16 +1,16 @@
 import * as express from "express";
-import { Request, Response } from "express";
-
 import * as passportConfig from "./config/passport";
 
-const router = express.Router();
+import { UserController } from "./user/user.controller";
+import { HomeController } from "./home/home.controller";
+
+export const router = express.Router();
 
 /*
 example:
 app.get("/account", passportConfig.isAuthenticated, userController.getAccount);
  */
-router.get("/", function(req: Request, res: Response, next: Function) {
-  res.render("index");
-});
 
-module.exports = router;
+router.get("/", HomeController.load);
+router.post("/register", UserController.userValidator(), UserController.register);
+router.post("/login", UserController.userValidator(), UserController.login);

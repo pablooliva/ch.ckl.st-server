@@ -15,10 +15,9 @@ export interface IUser {
   comparePassword: (candidatePassword: string) => Promise<boolean>;
 }
 
-/*
-Detaches user definition and user DAL. If you want to switch from mongo to another db provider,
-you won't have to change user interface. https://github.com/Appsilon/styleguide/wiki/mongoose-typescript-models
-*/
+/*  Detaches user definition and user DAL. If you want to switch from mongo
+    to another db provider, you won't have to change user interface.
+    https://github.com/Appsilon/styleguide/wiki/mongoose-typescript-models */
 interface IUserModel extends IUser, mongoose.Document {}
 
 const userSchema = new mongoose.Schema(
@@ -32,7 +31,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", next => {
+userSchema.pre("save", function(next): void {
   const user = this;
   if (!user.isModified("password")) {
     return next();
@@ -51,19 +50,15 @@ userSchema.pre("save", next => {
   });
 });
 
-userSchema.methods.comparePassword = (candidatePassword: string) => {
-  /*bcrypt.compare(
-    candidatePassword,
-    this.password,
-    (err: mongoose.Error, isMatch: boolean) => {
-      cb(err, isMatch);
-    }
-  );*/
-  return bcrypt.compare(candidatePassword, this.password);
+userSchema.methods.comparePassword = function(candidatePassword: string): Promise<boolean> {
+  const password = this.password;
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, password, (err, success) => {
+      return err ? reject(err) : resolve(success);
+    });
+  });
 };
 
-/*const User = mongoose.model<IUserModel>("User", userSchema);
-export default User;*/
 export const User = mongoose.model<IUserModel>("User", userSchema);
 
 export const cleanCollection = () => User.remove({}).exec();

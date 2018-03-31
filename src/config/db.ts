@@ -9,21 +9,11 @@ export class Db {
 
   public constructor() {
     this._log = Logger.log();
-
-    switch (process.env.NODE_ENV) {
-      case "test":
-      case "dev":
-      case "prod":
-        this._dbName = "checklist";
-        break;
-      default:
-        this._dbName = "checklist";
-    }
   }
 
   public connect(): void {
     mongoose
-      .connect(process.env.DB_URI + this._dbName)
+      .connect(this.getDbUrl())
       .then(msg => {
         this._log.info("mLab Connected: " + msg);
       })
@@ -39,5 +29,25 @@ export class Db {
         throw err;
       }
     });
+  }
+
+  private _getDb(): string {
+    if (!this._dbName) {
+      switch (process.env.NODE_ENV) {
+        case "test":
+        case "dev":
+        case "prod":
+          this._dbName = "checklist";
+          break;
+        default:
+          this._dbName = "checklist";
+      }
+    }
+
+    return this._dbName;
+  }
+
+  public getDbUrl(): string {
+    return process.env.DB_URI + this._getDb();
   }
 }

@@ -1,75 +1,94 @@
 import * as express from "express";
-import * as expressValidator from "express-validator";
-import * as session from "express-session";
+import * as expressSession from "express-session";
+import * as passport from "passport";
 import * as fs from "fs";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import * as logger from "morgan";
-import * as cookieParser from "cookie-parser";
 import * as bodyParser from "body-parser";
+import * as cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
-import * as lusca from "lusca";
+// import * as lusca from "lusca"; https://github.com/krakenjs/lusca
 import * as mongo from "connect-mongo";
-import * as flash from "express-flash";
 
 import { Db } from "./db";
 import { MongoStoreFactory } from "connect-mongo";
-// const auth = require("../controllers/auth").default;
+import { PassportConfig } from "./passport";
+import { router as appRoutes } from "../app.routes";
 
 export class App {
   private _MongoStore: MongoStoreFactory;
   private _db: Db;
+  private _passportConfig: PassportConfig;
 
   public express: express.Application;
 
   public constructor() {
     dotenv.config({ path: path.join(__dirname, ".env") });
 
-    this._MongoStore = mongo(session);
+    this._MongoStore = mongo(expressSession);
     this._db = new Db();
     this._db.connect();
+    this._passportConfig = new PassportConfig();
 
     this.express = express();
     this._config();
   }
 
   private _config(): void {
-    const appRoutes = require("../app.routes");
-
     this.express.set("views", path.join(__dirname, "..", "public"));
     this.express.set("view engine", "html");
     this.express.engine("html", function(path: any, options: any, cb: any) {
       fs.readFile(path, "utf-8", cb);
     });
 
-    this.express.use(
-      favicon(path.join(__dirname, "..", "public", "favicon.ico"))
-    );
+    this.express.use(favicon(path.join(__dirname, "..", "public", "favicon.ico")));
     this.express.use(logger("dev"));
-    this.express.use(bodyParser.json());
-    this.express.use(bodyParser.urlencoded({ extended: false }));
+    this.express.use(bodyParser.json({ type: "application/json" }));
+    this.express.use(
+      bodyParser.urlencoded({
+        extended: false,
+        type: "application/x-www-form-urlencoded"
+      })
+    );
     this.express.use(cookieParser());
     this.express.use(express.static(path.join(__dirname, "..", "public")));
     this.express.use(
-      expressValidator({
-        customValidators: {
-          isArray: function(value) {
-            return Array.isArray(value);
-          }
-        }
+      expressSession({
+        resave: true,
+        saveUninitialized: true,
+        secret: process.env.SESSION_SECRET,
+        store: new this._MongoStore({
+          url: this._db.getDbUrl(),
+          autoReconnect: true
+        })
       })
     );
-
-    this.express.use(function(req, res, next) {
+    this.express.use(passport.initialize());
+    this.express.use(passport.session());
+    /*
+    this.express.use(lusca({
+        csrf: true,
+        csp: { /!* ... *!/},
+        xframe: 'SAMEORIGIN',
+        p3p: 'ABCDEF',
+        hsts: {maxAge: 31536000, includeSubDomains: true, preload: true},
+        xssProtection: true,
+        nosniff: true,
+        referrerPolicy: 'same-origin'
+    }));
+    */
+    this.express.use((req, res, next) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.setHeader(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept"
       );
-      res.setHeader(
-        "Access-Control-Allow-Methods",
-        "POST, GET, PATCH, DELETE, OPTIONS"
-      );
+      res.setHeader("Access-Control-Allow-Methods", "POST, GET, PATCH, DELETE, OPTIONS");
+      next();
+    });
+    this.express.use((req, res, next) => {
+      res.locals.user = req.user;
       next();
     });
 
@@ -98,8 +117,13 @@ export class App {
     this.express.use("/", appRoutes);
 
     // catch 404 and forward to error handler
-    this.express.use(function(req, res, next) {
+    this.express.use((req, res) => {
       return res.render("index");
+    });
+
+    this.express.on("uncaughtException", err => {
+      console.error("uncaughtException: ", err.message);
+      console.error(err.stack);
     });
   }
 }

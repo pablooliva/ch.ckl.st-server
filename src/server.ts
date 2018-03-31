@@ -6,11 +6,11 @@ const app = new App().express;
 const port = process.env.PORT || 3000;
 
 app.listen(port, (err: Error) => {
-    if (err) {
-        return log.error(err.toString());
-    }
-    log.info(`
-        Express server listening on port ${port}.
-        Environment: ${process.env.NODE_ENV}
+  if (err) {
+    return log.error(" *** Server error *** " + err.toString());
+  }
+  log.info(`
+      Express server listening on port ${port}.
+      Environment: ${process.env.NODE_ENV}.
     `);
 });
