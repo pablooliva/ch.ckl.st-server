@@ -34,6 +34,9 @@ node_modules/
 # API keys and secrets
 .env
 
+#local SSL certs
+src/config/certs
+
 # IDEs and editors
 /.idea
 .project

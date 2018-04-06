@@ -8,16 +8,13 @@ import * as logger from "morgan";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
-// import * as lusca from "lusca"; https://github.com/krakenjs/lusca
-import * as mongo from "connect-mongo";
+import * as lusca from "lusca";
 
 import { Db } from "./db";
-import { MongoStoreFactory } from "connect-mongo";
 import { PassportConfig } from "./passport";
 import { router as appRoutes } from "../app.routes";
 
 export class App {
-  private _MongoStore: MongoStoreFactory;
   private _db: Db;
   private _passportConfig: PassportConfig;
 
@@ -25,17 +22,15 @@ export class App {
 
   public constructor() {
     dotenv.config({ path: path.join(__dirname, ".env") });
+    this.express = express();
 
-    this._MongoStore = mongo(expressSession);
     this._db = new Db();
     this._db.connect();
     this._passportConfig = new PassportConfig();
-
-    this.express = express();
-    this._config();
+    this._expressConfig();
   }
 
-  private _config(): void {
+  private _expressConfig(): void {
     this.express.set("views", path.join(__dirname, "..", "public"));
     this.express.set("view engine", "html");
     this.express.engine("html", function(path: any, options: any, cb: any) {
@@ -44,45 +39,44 @@ export class App {
 
     this.express.use(favicon(path.join(__dirname, "..", "public", "favicon.ico")));
     this.express.use(logger("dev"));
+    this.express.use(cookieParser());
     this.express.use(bodyParser.json({ type: "application/json" }));
     this.express.use(
       bodyParser.urlencoded({
-        extended: false,
+        extended: true,
         type: "application/x-www-form-urlencoded"
       })
     );
-    this.express.use(cookieParser());
     this.express.use(express.static(path.join(__dirname, "..", "public")));
     this.express.use(
       expressSession({
         resave: true,
         saveUninitialized: true,
-        secret: process.env.SESSION_SECRET,
-        store: new this._MongoStore({
-          url: this._db.getDbUrl(),
-          autoReconnect: true
-        })
+        secret: process.env.SECRET
       })
     );
     this.express.use(passport.initialize());
-    this.express.use(passport.session());
-    /*
-    this.express.use(lusca({
-        csrf: true,
-        csp: { /!* ... *!/},
-        xframe: 'SAMEORIGIN',
-        p3p: 'ABCDEF',
-        hsts: {maxAge: 31536000, includeSubDomains: true, preload: true},
+    /*this.express.use(
+      lusca({
+        // csrf: true,
+        csp: {
+          policy: {
+            "default-src": "'self'"
+          }
+        },
+        xframe: "SAMEORIGIN",
+        p3p: "ABCDEF",
+        hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
         xssProtection: true,
         nosniff: true,
-        referrerPolicy: 'same-origin'
-    }));
-    */
+        referrerPolicy: "same-origin"
+      })
+    );*/
     this.express.use((req, res, next) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.setHeader(
         "Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept"
+        "Authorization, Origin, X-Requested-With, Content-Type, Accept"
       );
       res.setHeader("Access-Control-Allow-Methods", "POST, GET, PATCH, DELETE, OPTIONS");
       next();
@@ -118,6 +112,7 @@ export class App {
 
     // catch 404 and forward to error handler
     this.express.use((req, res) => {
+      console.warn("*** GOT HERE ***");
       return res.render("index");
     });
 
