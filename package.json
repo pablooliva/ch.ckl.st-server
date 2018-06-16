@@ -22,6 +22,7 @@
     "test": "NODE_ENV=test npm run build && mocha dist/**/*.spec.js"
   },
   "dependencies": {
+    "accesscontrol": "^2.2.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "~1.18.2",
     "connect-mongo": "^2.0.1",

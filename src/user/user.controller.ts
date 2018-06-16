@@ -1,11 +1,9 @@
-import * as passport from "passport";
 import * as jwt from "jsonwebtoken";
 
 import { NextFunction, Request, Response } from "express";
 import { check, validationResult } from "express-validator/check";
 import { matchedData } from "express-validator/filter";
-import { IVerifyOptions } from "passport-local";
-import { IUser, User } from "./user.model";
+import { User } from "./user.model";
 
 export class UserController {
   public static userValidator(): any[] {
@@ -75,7 +73,7 @@ export class UserController {
           .comparePassword(validatedReq.password)
           .then(isMatch => {
             const token = jwt.sign(JSON.stringify(user), process.env.SECRET);
-            return res.json({ success: true, token: token });
+            return res.json({ success: true, token: token, user: user._id });
           })
           .catch(err => {
             console.warn("err", err);

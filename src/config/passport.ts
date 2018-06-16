@@ -34,7 +34,9 @@ export class PassportConfig {
     if (req.isAuthenticated()) {
       return next();
     } else {
-      return res.status(422).json({ errors: "you suck" });
+      return res
+        .status(422)
+        .json({ errors: "Can't touch this... when you are not authenticated." });
     }
   }
 

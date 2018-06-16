@@ -14,7 +14,7 @@ let server = app;
     key: fs.readFileSync("src/config/certs/rootCA.key"),
     cert: fs.readFileSync("src/config/certs/rootCA.crt")
   };
-  server = https.createServer(serverOptions, app);
+  server = <any>https.createServer(serverOptions, app);
 } else {
   server = app;
 }*/
