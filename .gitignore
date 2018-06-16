@@ -33,6 +33,7 @@ node_modules/
 # dotenv environment variables file
 # API keys and secrets
 .env
+src/config/certs/
 
 # IDEs and editors
 /.idea
