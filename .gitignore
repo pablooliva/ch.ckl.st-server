@@ -35,6 +35,9 @@ node_modules/
 .env
 src/config/certs/
 
+#local SSL certs
+src/config/certs
+
 # IDEs and editors
 /.idea
 .project

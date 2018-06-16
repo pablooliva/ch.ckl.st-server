@@ -1,0 +1,8 @@
+app:
+  build: .
+  command: npm run dev
+  volumes:
+    - .:/app
+  ports:
+    - "3000:3000"
+    - "9229:9229"
