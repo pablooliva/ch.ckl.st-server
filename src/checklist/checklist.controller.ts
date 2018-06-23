@@ -95,8 +95,9 @@ export class ChecklistController {
         parentChecklist: req.body.parentChecklist,
         owner: req.body.owner,
         public: req.body.public,
-        title: validatedReq.title,
+        documentTitle: validatedReq.documentTitle,
         documentTags: req.body.documentTags,
+        checklistTags: req.body.checklistTags,
         customCss: req.body.customCss,
         sections: req.body.sections
       });

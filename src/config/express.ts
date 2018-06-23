@@ -90,7 +90,7 @@ export class App {
         "Access-Control-Allow-Headers",
         "Authorization, Origin, X-Requested-With, Content-Type, Accept"
       );
-      res.setHeader("Access-Control-Allow-Methods", "POST, GET, PATCH, DELETE, OPTIONS");
+      res.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, DELETE, OPTIONS");
       next();
     });
     this.express.use((req, res, next) => {
