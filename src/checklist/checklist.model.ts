@@ -55,7 +55,7 @@ const checklistItemSchema = new mongoose.Schema({
     required: true
   },
   flexibleText: String,
-  checklistTagsEnabled: [String]
+  checklistTagsEnabled: [{ tag: Boolean }]
 });
 
 const sectionSchema = new mongoose.Schema({
