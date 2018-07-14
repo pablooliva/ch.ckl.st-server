@@ -54,7 +54,7 @@ userSchema.methods.comparePassword = function(candidatePassword: string): Promis
   const password = this.password;
   return new Promise((resolve, reject) => {
     bcrypt.compare(candidatePassword, password, (err, success) => {
-      return err ? reject(err) : resolve(success);
+      return err || !success ? reject(err) : resolve(success);
     });
   });
 };
