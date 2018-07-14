@@ -17,5 +17,4 @@ router.put("/checklists/:cId", ChecklistController.postValidator(), ChecklistCon
 router.delete("/checklists/:cId", ChecklistController.delete);
 
 // TODO: remove, only for testing, set up, etc.
-router.get("/test", passport.authenticate("jwt", { session: false }), UserController.test);
 router.get("/setup", ChecklistController.setUp);

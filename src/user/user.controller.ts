@@ -50,12 +50,15 @@ export class UserController {
     });
   }
 
-  public static login(req: Request, res: Response, next: NextFunction): Response {
+  public static login(req: Request, res: Response, next: NextFunction): any {
+    // Prevent giving too specific details on login failures
+    /*
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });
     }
+    */
 
     // matchedData returns only the subset of data validated by Express Validator
     const validatedReq = matchedData(req);
@@ -79,14 +82,9 @@ export class UserController {
             console.warn("err", err);
             return res
               .status(401)
-              .send({ success: false, msg: "Authentication failed. Wrong password." });
+              .send({ success: false, msg: "Authentication failed. Please try again." });
           });
       }
     });
-  }
-
-  public static test(req: Request, res: Response, next: NextFunction): Response {
-    console.warn("*** API YES ***");
-    return res.status(200).json({ success: "Success! Authenticated!" });
   }
 }
