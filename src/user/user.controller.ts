@@ -38,14 +38,16 @@ export class UserController {
         return next(err);
       }
       if (existingUser) {
-        return res.status(422).json({ errors: "Account with that email address already exists." });
+        return res
+          .status(422)
+          .json({ success: false, msg: "An account with that email address already exists." });
       }
 
       user.save(err => {
         if (err) {
           return next(err);
         }
-        return res.status(200).json({ success: "Success! You are registered." });
+        return res.status(200).json({ success: true, msg: "Success! You are registered." });
       });
     });
   }
@@ -54,7 +56,6 @@ export class UserController {
     // Prevent giving too specific details on login failures
     /*
     const errors = validationResult(req);
-
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.mapped() });
     }
