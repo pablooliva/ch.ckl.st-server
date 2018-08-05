@@ -2,8 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { check, validationResult } from "express-validator/check";
 import { matchedData } from "express-validator/filter";
 
-import { Checklist } from "./checklist.model";
-import { DocumentTag } from "./documentTag.model";
+import { Checklist, IChecklistModel } from "./checklist.model";
 
 export class ChecklistController {
   public static postValidator(): any {
@@ -18,26 +17,26 @@ export class ChecklistController {
     ];
   }
 
-  // TODO: remove
-  public static setUp(req: Request, res: Response, next: NextFunction): void | Response {
-    const docTags = new DocumentTag({
-      label: "test"
-    });
-
-    docTags.save(err => {
-      return err
-        ? next(err)
-        : res.status(200).json({
-            success: "You have successfully created a new tag.",
-            docTagsId: docTags._id
-          });
-    });
-  }
-
   public static get(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: check if owner is requesting and/or public=true
     Checklist.findById(req.params.cId, (err, checklist) => {
       return err ? next(err) : res.status(200).json(checklist);
+    });
+  }
+
+  public static getByUser(req: Request, res: Response, next: NextFunction): void | Response {
+    // TODO: check if owner is requesting
+    Checklist.find({ owner: req.params.uId }, (err: any, checklists: IChecklistModel[]) => {
+      if (err) {
+        return next(err);
+      }
+      const clsts: object[] = checklists.map(clst => {
+        return {
+          id: clst._id,
+          title: clst.documentTitle
+        };
+      });
+      return err ? next(err) : res.status(200).json(clsts);
     });
   }
 

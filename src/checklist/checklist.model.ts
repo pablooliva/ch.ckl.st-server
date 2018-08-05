@@ -1,6 +1,6 @@
 import * as mongoose from "mongoose";
 
-import { IDocumentTag } from "./documentTag.model";
+import { IDocumentTag } from "../docTag/documentTag.model";
 
 export interface IChecklistItemTag {
   label: string;
@@ -28,14 +28,14 @@ export interface IDocument {
   public: boolean;
   created: Date;
   updated: Date;
-  title: string;
+  documentTitle: string;
   documentTags: IDocumentTag[];
   checklistTags: IChecklistItemTag[];
   customCss: string;
   sections: ISection[];
 }
 
-interface IChecklistModel extends IDocument, mongoose.Document {}
+export interface IChecklistModel extends IDocument, mongoose.Document {}
 
 const checklistItemTagSchema = new mongoose.Schema({
   label: {
