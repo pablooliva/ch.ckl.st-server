@@ -40,9 +40,7 @@ export interface IChecklistModel extends IDocument, mongoose.Document {}
 const checklistItemTagSchema = new mongoose.Schema({
   label: {
     type: String,
-    required: true,
-    unique: true,
-    sparse: true
+    required: true
   },
   color: String,
   icon: String
