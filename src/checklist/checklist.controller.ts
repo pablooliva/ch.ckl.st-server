@@ -19,9 +19,11 @@ export class ChecklistController {
 
   public static get(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: check if owner is requesting and/or public=true
-    Checklist.findById(req.params.cId, (err, checklist) => {
-      return err ? next(err) : res.status(200).json(checklist);
-    });
+    Checklist.findById(req.params.cId)
+      .populate("documentTags")
+      .exec((err, checklist) => {
+        return err ? next(err) : res.status(200).json(checklist);
+      });
   }
 
   public static getByUser(req: Request, res: Response, next: NextFunction): void | Response {
