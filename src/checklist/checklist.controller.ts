@@ -29,9 +29,6 @@ export class ChecklistController {
   public static getByUser(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: check if owner is requesting
     Checklist.find({ owner: req.params.uId }, (err: any, checklists: IChecklistModel[]) => {
-      if (err) {
-        return next(err);
-      }
       const clsts: object[] = checklists.map(clst => {
         return {
           id: clst._id,

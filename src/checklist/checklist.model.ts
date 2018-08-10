@@ -12,7 +12,7 @@ export interface IChecklistItem {
   label: string;
   checked: boolean;
   flexibleText: string;
-  tags: mongoose.Schema.Types.ObjectId[];
+  checklistTagsEnabled: mongoose.Schema.Types.ObjectId[];
 }
 
 export interface ISection {
