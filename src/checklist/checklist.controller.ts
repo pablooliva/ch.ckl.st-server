@@ -111,6 +111,29 @@ export class ChecklistController {
     });
   }
 
+  public static use(req: Request, res: Response, next: NextFunction): void | Response {
+    // TODO: confirm submitter is authorized to update
+    Checklist.findById(req.params.cId, (err, checklist) => {
+      if (err) {
+        return next(err);
+      }
+
+      // TODO: make more efficient, only set updated values
+      checklist.set({
+        sections: req.body.sections
+      });
+
+      checklist.save(err => {
+        return err
+          ? next(err)
+          : res.status(200).json({
+            success: "You have successfully updated your checklist.",
+            checklistId: checklist._id
+          });
+      });
+    });
+  }
+
   public static delete(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: confirm submitter is authorized to delete
     Checklist.findByIdAndRemove(req.params.cId, err => {

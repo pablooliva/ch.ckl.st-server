@@ -11,11 +11,14 @@ router.get("/", HomeController.load);
 router.post("/register", UserController.userValidator(), UserController.register);
 router.post("/login", UserController.userValidator(), UserController.login);
 
+router.get("/tags/:tLabel", DocTagController.get);
+router.post("/tags", DocTagController.postValidator(), DocTagController.post);
+
 router.get("/checklists/user/:uId", ChecklistController.getByUser);
+
 router.get("/checklists/:cId", ChecklistController.get);
 router.post("/checklists", ChecklistController.postValidator(), ChecklistController.post);
 router.put("/checklists/:cId", ChecklistController.postValidator(), ChecklistController.put);
 router.delete("/checklists/:cId", ChecklistController.delete);
 
-router.get("/tags/:tLabel", DocTagController.get);
-router.post("/tags", DocTagController.postValidator(), DocTagController.post);
+router.put("/use/:cId", ChecklistController.use);
