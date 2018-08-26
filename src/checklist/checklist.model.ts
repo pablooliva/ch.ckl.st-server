@@ -21,9 +21,8 @@ export interface ISection {
   checklistItems: IChecklistItem[];
 }
 
-export interface IDocument {
+interface IBaseDocument {
   parentChecklist: mongoose.Schema.Types.ObjectId;
-  owner: mongoose.Schema.Types.ObjectId;
   active: boolean;
   public: boolean;
   created: Date;
@@ -35,7 +34,17 @@ export interface IDocument {
   sections: ISection[];
 }
 
+export interface IDocument extends IBaseDocument {
+  owner: mongoose.Schema.Types.ObjectId;
+}
+
+export interface IAnonDocument extends IBaseDocument {
+  url: string;
+}
+
 export interface IChecklistModel extends IDocument, mongoose.Document {}
+
+export interface IAnonChecklistModel extends IAnonDocument, mongoose.Document {}
 
 const checklistItemTagSchema = new mongoose.Schema({
   label: {
@@ -104,6 +113,54 @@ const checklistSchema = new mongoose.Schema({
   sections: [sectionSchema]
 });
 
+const anonChecklistSchema = new mongoose.Schema({
+  parentChecklist: {
+    type: mongoose.Schema.Types.ObjectId,
+    default: null,
+    ref: "Checklist"
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  active: {
+    type: Boolean,
+    default: true
+  },
+  public: {
+    type: Boolean,
+    default: true
+  },
+  created: {
+    type: Date,
+    default: Date.now()
+  },
+  updated: {
+    type: Date,
+    default: Date.now()
+  },
+  documentTitle: {
+    type: String,
+    required: "{PATH} is required!"
+  },
+  documentTags: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DocumentTag"
+    }
+  ],
+  checklistTags: [checklistItemTagSchema],
+  customCss: String,
+  sections: [sectionSchema]
+});
+
 export const Checklist = mongoose.model<IChecklistModel>("Checklist", checklistSchema);
 
 export const cleanCollection = () => Checklist.remove({}).exec();
+
+export const AnonChecklist = mongoose.model<IAnonChecklistModel>(
+  "AnonChecklist",
+  anonChecklistSchema
+);
+
+export const cleanAnonCollection = () => AnonChecklist.remove({}).exec();

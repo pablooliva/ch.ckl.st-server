@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { check, validationResult } from "express-validator/check";
 import { matchedData } from "express-validator/filter";
 
-import { Checklist, IChecklistModel } from "./checklist.model";
+import { Checklist, IChecklistModel, ISection } from "./checklist.model";
 
 export class ChecklistController {
   public static postValidator(): any {
@@ -127,9 +127,37 @@ export class ChecklistController {
         return err
           ? next(err)
           : res.status(200).json({
-            success: "You have successfully updated your checklist.",
-            checklistId: checklist._id
-          });
+              success: "You have successfully updated your checklist.",
+              checklistId: checklist._id
+            });
+      });
+    });
+  }
+
+  public static useCopy(req: Request, res: Response, next: NextFunction): void | Response {
+    Checklist.findById(req.body.pendingCID, (err, checklist) => {
+      if (err) {
+        return next(err);
+      }
+
+      const dupChecklist = new Checklist({
+        parentChecklist: checklist.parentChecklist,
+        owner: req.body.pendingUID,
+        public: checklist.public,
+        documentTitle: checklist.documentTitle,
+        documentTags: checklist.documentTags,
+        checklistTags: checklist.checklistTags,
+        customCss: checklist.customCss,
+        sections: resetChecklistItems(checklist.sections)
+      });
+
+      dupChecklist.save(err => {
+        return err
+          ? next(err)
+          : res.status(200).json({
+              success: "You have successfully copied the checklist.",
+              newCID: dupChecklist._id
+            });
       });
     });
   }
@@ -144,4 +172,16 @@ export class ChecklistController {
           });
     });
   }
+}
+
+export function resetChecklistItems(sections: ISection[]): ISection[] {
+  const sectionClone = [...sections];
+
+  sectionClone.forEach(sect => {
+    sect.checklistItems.forEach(item => {
+      item.checked = false;
+    });
+  });
+
+  return sectionClone;
 }

@@ -22,3 +22,4 @@ router.put("/checklists/:cId", ChecklistController.postValidator(), ChecklistCon
 router.delete("/checklists/:cId", ChecklistController.delete);
 
 router.put("/use/:cId", ChecklistController.use);
+router.post("/use/copy", ChecklistController.useCopy);
