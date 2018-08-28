@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { check, validationResult } from "express-validator/check";
 import { matchedData } from "express-validator/filter";
 
-import { Checklist, IChecklistModel, ISection } from "./checklist.model";
+import { Checklist, AnonChecklist, IChecklistModel, ISection } from "./checklist.model";
 
 export class ChecklistController {
   public static postValidator(): any {
@@ -20,6 +20,15 @@ export class ChecklistController {
   public static get(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: check if owner is requesting and/or public=true
     Checklist.findById(req.params.cId)
+      .populate("documentTags")
+      .exec((err, checklist) => {
+        return err ? next(err) : res.status(200).json(checklist);
+      });
+  }
+
+  public static getAnon(req: Request, res: Response, next: NextFunction): void | Response {
+    // TODO: check if owner is requesting and/or public=true
+    AnonChecklist.findById(req.params.cId)
       .populate("documentTags")
       .exec((err, checklist) => {
         return err ? next(err) : res.status(200).json(checklist);
@@ -134,31 +143,74 @@ export class ChecklistController {
     });
   }
 
+  public static useAnon(req: Request, res: Response, next: NextFunction): void | Response {
+    AnonChecklist.findById(req.params.cId, (err, checklist) => {
+      if (err) {
+        return next(err);
+      }
+
+      // TODO: make more efficient, only set updated values
+      checklist.set({
+        sections: req.body.sections
+      });
+
+      checklist.save(err => {
+        return err
+          ? next(err)
+          : res.status(200).json({
+              success: "You have successfully updated your checklist.",
+              checklistId: checklist._id
+            });
+      });
+    });
+  }
+
   public static useCopy(req: Request, res: Response, next: NextFunction): void | Response {
     Checklist.findById(req.body.pendingCID, (err, checklist) => {
       if (err) {
         return next(err);
       }
 
-      const dupChecklist = new Checklist({
-        parentChecklist: checklist.parentChecklist,
-        owner: req.body.pendingUID,
-        public: checklist.public,
-        documentTitle: checklist.documentTitle,
-        documentTags: checklist.documentTags,
-        checklistTags: checklist.checklistTags,
-        customCss: checklist.customCss,
-        sections: resetChecklistItems(checklist.sections)
-      });
+      if (req.body.pendingUID) {
+        const dupChecklist = new Checklist({
+          parentChecklist: checklist.parentChecklist,
+          owner: req.body.pendingUID,
+          public: checklist.public,
+          documentTitle: checklist.documentTitle,
+          documentTags: checklist.documentTags,
+          checklistTags: checklist.checklistTags,
+          customCss: checklist.customCss,
+          sections: resetChecklistItems(checklist.sections)
+        });
 
-      dupChecklist.save(err => {
-        return err
-          ? next(err)
-          : res.status(200).json({
-              success: "You have successfully copied the checklist.",
-              newCID: dupChecklist._id
-            });
-      });
+        dupChecklist.save(err => {
+          return err
+            ? next(err)
+            : res.status(200).json({
+                success: "You have successfully copied the checklist.",
+                newCID: dupChecklist._id
+              });
+        });
+      } else {
+        const anonChecklist = new AnonChecklist({
+          parentChecklist: checklist.parentChecklist,
+          public: checklist.public,
+          documentTitle: checklist.documentTitle,
+          documentTags: checklist.documentTags,
+          checklistTags: checklist.checklistTags,
+          customCss: checklist.customCss,
+          sections: resetChecklistItems(checklist.sections)
+        });
+
+        anonChecklist.save(err => {
+          return err
+            ? next(err)
+            : res.status(200).json({
+                success: "You have successfully copied the checklist.",
+                newCID: anonChecklist._id
+              });
+        });
+      }
     });
   }
 

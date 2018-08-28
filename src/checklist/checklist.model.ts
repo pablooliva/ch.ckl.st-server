@@ -39,7 +39,7 @@ export interface IDocument extends IBaseDocument {
 }
 
 export interface IAnonDocument extends IBaseDocument {
-  url: string;
+  owner: string;
 }
 
 export interface IChecklistModel extends IDocument, mongoose.Document {}
@@ -119,9 +119,9 @@ const anonChecklistSchema = new mongoose.Schema({
     default: null,
     ref: "Checklist"
   },
-  url: {
+  owner: {
     type: String,
-    required: true
+    default: "anon"
   },
   active: {
     type: Boolean,
