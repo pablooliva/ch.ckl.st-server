@@ -14,15 +14,14 @@ router.post("/login", UserController.userValidator(), UserController.login);
 router.get("/tags/:tLabel", DocTagController.get);
 router.post("/tags", DocTagController.postValidator(), DocTagController.post);
 
-router.get("/checklists/user/:uId", ChecklistController.getByUser);
 router.get("/anonchecklists/:cId", ChecklistController.getAnon);
+router.put("/anonchecklists/:cId", ChecklistController.useAnon);
 
+router.get("/checklists/user/:uId", ChecklistController.getByUser);
 router.get("/checklists/:cId", ChecklistController.get);
 router.post("/checklists", ChecklistController.postValidator(), ChecklistController.post);
 router.put("/checklists/:cId", ChecklistController.postValidator(), ChecklistController.put);
 router.delete("/checklists/:cId", ChecklistController.delete);
 
 router.put("/use/:cId", ChecklistController.use);
-// TODO: convert to route.put "/anonchecklists/:cId
-router.put("/use/anon/:cId", ChecklistController.useAnon);
 router.post("/use/copy", ChecklistController.useCopy);

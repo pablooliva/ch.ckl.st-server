@@ -216,7 +216,7 @@ export class ChecklistController {
 
   public static delete(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: confirm submitter is authorized to delete
-    Checklist.findByIdAndRemove(req.params.cId, err => {
+    Checklist.deleteOne({ _id: req.params.cId }, err => {
       return err
         ? next(err)
         : res.status(204).json({
