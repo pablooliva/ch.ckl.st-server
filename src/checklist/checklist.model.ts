@@ -29,6 +29,7 @@ interface IBaseDocument {
   updated: Date;
   documentTitle: string;
   documentTags: IDocumentTag[];
+  flexibleText: string,
   checklistTags: IChecklistItemTag[];
   customCss: string;
   sections: ISection[];
@@ -108,6 +109,7 @@ const checklistSchema = new mongoose.Schema({
       ref: "DocumentTag"
     }
   ],
+  flexibleText: String,
   checklistTags: [checklistItemTagSchema],
   customCss: String,
   sections: [sectionSchema]
@@ -149,6 +151,7 @@ const anonChecklistSchema = new mongoose.Schema({
       ref: "DocumentTag"
     }
   ],
+  flexibleText: String,
   checklistTags: [checklistItemTagSchema],
   customCss: String,
   sections: [sectionSchema]

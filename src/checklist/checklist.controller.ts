@@ -64,6 +64,7 @@ export class ChecklistController {
       public: req.body.public,
       documentTitle: validatedReq.documentTitle,
       documentTags: req.body.documentTags,
+      flexibleText: req.body.flexibleText,
       checklistTags: req.body.checklistTags,
       customCss: req.body.customCss,
       sections: req.body.sections
@@ -104,6 +105,7 @@ export class ChecklistController {
         public: req.body.public,
         documentTitle: validatedReq.documentTitle,
         documentTags: req.body.documentTags,
+        flexibleText: req.body.flexibleText,
         checklistTags: req.body.checklistTags,
         customCss: req.body.customCss,
         sections: req.body.sections
@@ -178,6 +180,7 @@ export class ChecklistController {
           public: checklist.public,
           documentTitle: checklist.documentTitle,
           documentTags: checklist.documentTags,
+          flexibleText: checklist.flexibleText,
           checklistTags: checklist.checklistTags,
           customCss: checklist.customCss,
           sections: resetChecklistItems(checklist.sections)
@@ -197,6 +200,7 @@ export class ChecklistController {
           public: checklist.public,
           documentTitle: checklist.documentTitle,
           documentTags: checklist.documentTags,
+          flexibleText: checklist.flexibleText,
           checklistTags: checklist.checklistTags,
           customCss: checklist.customCss,
           sections: resetChecklistItems(checklist.sections)

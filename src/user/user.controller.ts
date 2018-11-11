@@ -95,6 +95,7 @@ export class UserController {
                   public: checklist.public,
                   documentTitle: checklist.documentTitle,
                   documentTags: checklist.documentTags,
+                  flexibleText: checklist.flexibleText,
                   checklistTags: checklist.checklistTags,
                   customCss: checklist.customCss,
                   sections: resetChecklistItems(checklist.sections)
