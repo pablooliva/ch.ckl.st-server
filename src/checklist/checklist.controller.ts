@@ -37,7 +37,7 @@ export class ChecklistController {
 
   public static getByUser(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: check if owner is requesting
-    Checklist.find({ owner: req.params.uId }, (err: any, checklists: IChecklistModel[]) => {
+    Checklist.find({ owner: req.params.uId, active: true }, (err: any, checklists: IChecklistModel[]) => {
       const clsts: object[] = checklists.map(clst => {
         return {
           id: clst._id,
@@ -220,12 +220,22 @@ export class ChecklistController {
 
   public static delete(req: Request, res: Response, next: NextFunction): void | Response {
     // TODO: confirm submitter is authorized to delete
-    Checklist.deleteOne({ _id: req.params.cId }, err => {
-      return err
-        ? next(err)
-        : res.status(204).json({
+    Checklist.findById(req.params.cId, (err, checklist) => {
+      if (err) {
+        return next(err);
+      }
+
+      checklist.set({
+        active: false
+      });
+
+      checklist.save(err => {
+        return err
+          ? next(err)
+          : res.status(204).json({
             success: "You have successfully deleted your checklist."
           });
+      });
     });
   }
 }
