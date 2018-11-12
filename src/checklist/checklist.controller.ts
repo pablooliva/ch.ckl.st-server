@@ -22,7 +22,15 @@ export class ChecklistController {
     Checklist.findById(req.params.cId)
       .populate("documentTags")
       .exec((err, checklist) => {
-        return err ? next(err) : res.status(200).json(checklist);
+        if (err) {
+          return next(err);
+        }
+
+        return checklist.active
+          ? res.status(200).json(checklist)
+          : res.status(204).json({
+            error: "This checklist is no longer available."
+          });
       });
   }
 
