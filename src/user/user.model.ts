@@ -1,5 +1,6 @@
 import * as bcrypt from "bcryptjs";
 import * as mongoose from "mongoose";
+import {NextFunction} from "express";
 
 export interface IAuthToken {
   accessToken: string;
@@ -31,7 +32,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", function(next): void {
+userSchema.pre("save", function(next: NextFunction): void {
   const user = this;
   if (!user.isModified("password")) {
     return next();

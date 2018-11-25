@@ -2,9 +2,9 @@
 // import * as fs from "fs";
 
 import { App } from "./config/express";
-import { Logger } from "./config/logger";
+import { ClstLogger } from "./config/logger";
 
-const log = Logger.log();
+const log = ClstLogger.log();
 const app = new App().express;
 const port = process.env.PORT || 3000;
 let server = app;
@@ -23,8 +23,5 @@ server.listen(port, (err: Error) => {
   if (err) {
     return log.error(" *** Server error *** " + err.toString());
   }
-  log.info(`
-      Express server listening on port ${port}.
-      Environment: ${process.env.NODE_ENV}.
-    `);
+  log.info(`Express server listening on port ${port}. Environment: ${process.env.NODE_ENV}.`);
 });

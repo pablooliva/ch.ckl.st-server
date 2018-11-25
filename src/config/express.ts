@@ -111,7 +111,7 @@ export class App {
     });
 
     this.express.on("uncaughtException", err => {
-      console.error("uncaughtException: ", err.message);
+      console.error("uncaughtException: ", err);
       console.error(err.stack);
     });
   }

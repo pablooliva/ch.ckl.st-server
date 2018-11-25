@@ -1,21 +1,21 @@
 import * as mongoose from "mongoose";
 
-import { Logger } from "./logger";
-import { LoggerInstance } from "winston";
+import { ClstLogger } from "./logger";
+import { Logger } from "winston";
 
 export class Db {
   private _dbName: string;
-  private _log: LoggerInstance;
+  private _log: Logger;
 
   public constructor() {
-    this._log = Logger.log();
+    this._log = ClstLogger.log();
   }
 
   public connect(): void {
     mongoose
-      .connect(this.getDbUrl())
-      .then(msg => {
-        this._log.info("mLab Connected: " + msg);
+      .connect(this.getDbUrl(), { useNewUrlParser: true })
+      .then(() => {
+        this._log.info("mLab Connected");
       })
       .catch(err => {
         this._log.error("No connection to mLab: " + err);
