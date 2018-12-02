@@ -24,7 +24,9 @@ export class App {
   public express: express.Application;
 
   public constructor() {
-    dotenv.config({ path: path.join(__dirname, ".env") });
+    if (fs.existsSync(path.join(__dirname, ".env"))) {
+      dotenv.config({ path: path.join(__dirname, ".env")});
+    }
     this.express = express();
 
     this._db = new Db();
