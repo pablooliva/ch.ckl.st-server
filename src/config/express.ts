@@ -12,13 +12,13 @@ import * as lusca from "lusca";
 import * as mongo from "connect-mongo";
 
 import { Db } from "./db";
-import { MongoStoreFactory } from "connect-mongo";
+// import { MongoStoreFactory } from "connect-mongo";
 import { PassportConfig } from "./passport";
 import { router as appRoutes } from "../app.routes";
 
 export class App {
   private _db: Db;
-  private _MongoStore: MongoStoreFactory;
+  private _MongoStore: any;
   private _passportConfig: PassportConfig;
 
   public express: express.Application;
