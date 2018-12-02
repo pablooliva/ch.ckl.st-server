@@ -29,7 +29,7 @@ interface IBaseDocument {
   updated: Date;
   documentTitle: string;
   documentTags: IDocumentTag[];
-  flexibleText: string,
+  flexibleText: string;
   checklistTags: IChecklistItemTag[];
   customCss: string;
   sections: ISection[];

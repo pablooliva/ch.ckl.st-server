@@ -1,6 +1,6 @@
 import * as bcrypt from "bcryptjs";
 import * as mongoose from "mongoose";
-import {NextFunction} from "express";
+import { NextFunction } from "express";
 
 export interface IAuthToken {
   accessToken: string;

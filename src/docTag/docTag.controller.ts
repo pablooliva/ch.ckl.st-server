@@ -12,7 +12,7 @@ export class DocTagController {
         .exists()
         .not()
         .isEmpty()
-        //.isAlphanumeric()
+        // .isAlphanumeric()
         .withMessage("Tag label is not valid")
     ];
   }

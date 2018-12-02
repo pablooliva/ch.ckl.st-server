@@ -7,7 +7,7 @@ import { ClstLogger } from "./config/logger";
 const log = ClstLogger.log();
 const app = new App().express;
 const port = process.env.PORT || 3000;
-let server = app;
+const server = app;
 
 /*if (process.env.NODE_ENV === "dev") {
   const serverOptions = {

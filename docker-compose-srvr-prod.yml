@@ -10,7 +10,7 @@ services:
           memory: 500M
       restart_policy:
         condition: on-failure
-    command: npm run dev
+    command: npm run prod
     volumes:
       - .:/app
     env_file:

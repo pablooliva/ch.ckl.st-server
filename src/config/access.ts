@@ -1,7 +1,7 @@
 import { AccessControl } from "accesscontrol";
 
 // TODO: complete Access Control
-let grant = {
+const grant = {
   creator: {
     checklistTemplate: {
       "create:own": ["*"],

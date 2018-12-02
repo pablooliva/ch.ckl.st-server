@@ -12,7 +12,7 @@ export class ChecklistController {
         .exists()
         .not()
         .isEmpty()
-        //.isAlphanumeric()
+        // .isAlphanumeric()
         .withMessage("Checklist document title is not valid")
     ];
   }

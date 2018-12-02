@@ -8,3 +8,10 @@ services:
     ports:
       - "3000:3000"
       - "9229:9229"
+  app-stage:
+    build: .
+    command: npm run prod
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
