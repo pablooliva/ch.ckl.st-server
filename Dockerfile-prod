@@ -1,6 +1,6 @@
 FROM node
 WORKDIR /app
 COPY . /app
-RUN npm install
+RUN npm ci
 EXPOSE 3000
-CMD ["npm", "run", "rmt-dkr-prod"]
+CMD ["npm", "run", "prod"]

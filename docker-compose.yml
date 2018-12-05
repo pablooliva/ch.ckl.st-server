@@ -12,6 +12,6 @@ services:
       - "9229:9229"
   app-stage:
     image: pablooliva/ch.ckl.st-server:latest
-    command: npm run prod
+    command: SERVER=local npm run prod
     ports:
       - "3000:3000"
