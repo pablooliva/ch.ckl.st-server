@@ -16,8 +16,7 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "build-utils": "ts-node build.utils.js",
     "build": "npm run build-utils && tsc && npm run tslint",
-    "start": "node dist/server",
-    "prod": "NODE_ENV=prod npm run build && npm start",
+    "prod": "NODE_ENV=prod npm run build && NODE_ENV=prod node dist/server",
     "dev": "NODE_ENV=dev nodemon",
     "test": "NODE_ENV=test npm run build && mocha dist/**/*.spec.js"
   },
