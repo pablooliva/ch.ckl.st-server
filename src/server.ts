@@ -8,14 +8,14 @@ const log = ClstLogger.log();
 const app = new App().express;
 const port = process.env.PORT || 3000;
 const sslPort = process.env.SSL_PORT || 443;
+const sslPath = "/etc/letsencrypt/live/api.ch.ckl.st/";
 let server;
 let listeningPort;
 
 if (process.env.NODE_ENV === "prod" && process.env.SERVER !== "local") {
   const serverOptions = {
-    key: fs.readFileSync("/etc/letsencrypt/live/api.ch.ckl.st/privkey.pem"),
-    cert: fs.readFileSync("/etc/letsencrypt/live/api.ch.ckl.st/fullchain.pem"),
-    ca: fs.readFileSync("/etc/letsencrypt/live/api.ch.ckl.st/chain1.pem")
+    key: fs.readFileSync(sslPath + "privkey.pem"),
+    cert: fs.readFileSync(sslPath + "fullchain.pem")
   };
   server = <any>https.createServer(serverOptions, app);
   listeningPort = sslPort;
