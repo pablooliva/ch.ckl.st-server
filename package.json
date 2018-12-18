@@ -18,7 +18,8 @@
     "build": "npm run build-utils && tsc && npm run tslint",
     "prod": "NODE_ENV=prod npm run build && NODE_ENV=prod node dist/server",
     "dev": "NODE_ENV=dev nodemon",
-    "test": "NODE_ENV=test npm run build && mocha dist/**/*.spec.js"
+    "test": "NODE_ENV=test npm run build && mocha dist/**/*.spec.js",
+    "prettier": "prettier --parser typescript --write '**/*.ts'"
   },
   "dependencies": {
     "accesscontrol": "^2.2.1",
@@ -67,12 +68,26 @@
     "@types/supertest": "^2.0.6",
     "@types/winston": "^2.4.4",
     "chai": "^4.2.0",
+    "husky": "^1.2.1",
+    "lint-staged": "^8.1.0",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.7",
+    "prettier": "^1.15.3",
     "shelljs": "^0.8.3",
     "supertest": "^3.3.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typescript": "^3.2.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --parser typescript --write",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
