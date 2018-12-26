@@ -1,10 +1,12 @@
 import * as express from "express";
+import * as multer from "multer";
 
 import { HomeController } from "./home/home.controller";
 import { UserController } from "./user/user.controller";
 import { ChecklistController } from "./checklist/checklist.controller";
 import { DocTagController } from "./docTag/docTag.controller";
 import { RedirectionController } from "./redirection/redirection.controller";
+import { UserImageController } from "./userFiles/userImage.controller";
 
 export const router = express.Router();
 
@@ -38,5 +40,11 @@ router.delete("/checklists/:cId", ChecklistController.delete);
 
 router.put("/use/:cId", ChecklistController.use);
 router.post("/use/copy", ChecklistController.useCopy);
+
+router.post(
+  "/images",
+  multer({ storage: UserImageController.storage }).single("image"),
+  UserImageController.post
+);
 
 router.get("/r/:rSource", RedirectionController.get);

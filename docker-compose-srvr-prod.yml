@@ -17,3 +17,4 @@ services:
     volumes:
       - /etc/letsencrypt/live/api.ch.ckl.st:/etc/letsencrypt/live/api.ch.ckl.st
       - /data/letsencrypt:/data/letsencrypt
+      - /home/user-images:/dist/public/user-images

@@ -25,7 +25,7 @@ export class App {
 
   public constructor() {
     if (fs.existsSync(path.join(__dirname, ".env"))) {
-      dotenv.config({ path: path.join(__dirname, ".env")});
+      dotenv.config({ path: path.join(__dirname, ".env") });
     }
     this.express = express();
 
@@ -92,7 +92,10 @@ export class App {
         "Access-Control-Allow-Headers",
         "Authorization, Origin, X-Requested-With, Content-Type, Accept"
       );
-      res.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, DELETE, OPTIONS");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "POST, PUT, GET, DELETE, OPTIONS"
+      );
       next();
     });
     this.express.use((req, res, next) => {
@@ -103,7 +106,15 @@ export class App {
     // so we can get the client's IP address
     this.express.enable("trust proxy");
     this.express.use(express.static(path.join(__dirname, "..", "public")));
-    this.express.use(favicon(path.join(__dirname, "..", "public", "favicon.ico")));
+    this.express.use(
+      favicon(path.join(__dirname, "..", "public", "favicon.ico"))
+    );
+    this.express.use(
+      "/user-images",
+      express.static(path.join(__dirname, "..", "public", "user-images"), {
+        index: false
+      })
+    );
     this.express.use("/", appRoutes);
 
     // catch 404 and forward to error handler
