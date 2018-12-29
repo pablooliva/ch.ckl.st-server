@@ -86,6 +86,16 @@ export class App {
       })
     );
     this.express.use((req, res, next) => {
+      /*const whitelist = [
+        "127.0.0.1",
+        "localhost",
+        "https://api.ch.ckl.st",
+        "https://ch.ckl.st"
+      ];
+      const origin = req.headers.origin;
+      if (whitelist.indexOf(origin.toString()) > -1) {
+        res.setHeader("Access-Control-Allow-Origin", origin);
+      }*/
       res.setHeader("Access-Control-Allow-Origin", "*");
       res.setHeader("Access-Control-Allow-Credentials", "true");
       res.setHeader(
