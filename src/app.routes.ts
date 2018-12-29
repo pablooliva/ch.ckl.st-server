@@ -1,5 +1,6 @@
 import * as express from "express";
 import * as multer from "multer";
+import * as cors from "cors";
 
 import { HomeController } from "./home/home.controller";
 import { UserController } from "./user/user.controller";
@@ -10,6 +11,7 @@ import { UserImageController } from "./userFiles/userImage.controller";
 
 export const router = express.Router();
 
+router.options("*", cors());
 router.get("/", HomeController.load);
 router.post(
   "/register",

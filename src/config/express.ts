@@ -10,6 +10,7 @@ import * as cookieParser from "cookie-parser";
 import * as dotenv from "dotenv";
 import * as lusca from "lusca";
 import * as mongo from "connect-mongo";
+import * as cors from "cors";
 
 import { Db } from "./db";
 // import { MongoStoreFactory } from "connect-mongo";
@@ -42,6 +43,21 @@ export class App {
     this.express.engine("html", function(path: any, options: any, cb: any) {
       fs.readFile(path, "utf-8", cb);
     });
+    const corsConfig = {
+      origin: "https://ch.ckl.st",
+      methods: ["POST", "PUT", "GET", "DELETE", "OPTIONS"],
+      allowedHeaders: [
+        "Authorization",
+        "Origin",
+        "X-Requested-With",
+        "Content-Type",
+        "Accept",
+        "X-XSRF-TOKEN"
+      ],
+      credentials: true,
+      optionsSuccessStatus: 200
+    };
+    this.express.use(cors(corsConfig));
     this.express.use(logger("dev"));
     this.express.use(cookieParser());
     this.express.use(bodyParser.json({ type: "application/json" }));
@@ -68,10 +84,10 @@ export class App {
     this.express.use(passport.initialize());
     this.express.use(
       lusca({
-        csrf: {
+        /*csrf: {
           angular: true,
           cookie: "XSRF-TOKEN"
-        },
+        },*/
         csp: {
           policy: {
             "default-src": "'self'"
@@ -85,29 +101,7 @@ export class App {
         referrerPolicy: "same-origin"
       })
     );
-    this.express.use((req, res, next) => {
-      /*const whitelist = [
-        "127.0.0.1",
-        "localhost",
-        "https://api.ch.ckl.st",
-        "https://ch.ckl.st"
-      ];
-      const origin = req.headers.origin;
-      if (whitelist.indexOf(origin.toString()) > -1) {
-        res.setHeader("Access-Control-Allow-Origin", origin);
-      }*/
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Access-Control-Allow-Credentials", "true");
-      res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Authorization, Origin, X-Requested-With, Content-Type, Accept, X-XSRF-TOKEN"
-      );
-      res.setHeader(
-        "Access-Control-Allow-Methods",
-        "POST, PUT, GET, DELETE, OPTIONS"
-      );
-      next();
-    });
+
     this.express.use((req, res, next) => {
       res.locals.user = req.user;
       next();
