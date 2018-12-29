@@ -68,10 +68,10 @@ export class App {
     this.express.use(passport.initialize());
     this.express.use(
       lusca({
-        // TODO: pre-prod enable use of CSRF protection
-        /*csrf: {
-            angular: true
-          },*/
+        csrf: {
+          angular: true,
+          cookie: "XSRF-TOKEN"
+        },
         csp: {
           policy: {
             "default-src": "'self'"
