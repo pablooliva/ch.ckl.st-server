@@ -72,11 +72,11 @@ export class App {
           angular: true,
           cookie: "XSRF-TOKEN"
         },
-        /*csp: {
+        csp: {
           policy: {
             "default-src": "'self'"
           }
-        },*/
+        },
         xframe: "SAMEORIGIN",
         p3p: "ABCDEF",
         hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
