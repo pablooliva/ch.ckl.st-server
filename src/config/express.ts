@@ -68,15 +68,15 @@ export class App {
     this.express.use(passport.initialize());
     this.express.use(
       lusca({
-        // TODO: pre-prod enable use of CSRF protection
-        /*csrf: {
-            angular: true
-          },*/
-        csp: {
+        csrf: {
+          angular: true,
+          cookie: "XSRF-TOKEN"
+        },
+        /*csp: {
           policy: {
             "default-src": "'self'"
           }
-        },
+        },*/
         xframe: "SAMEORIGIN",
         p3p: "ABCDEF",
         hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
@@ -90,7 +90,7 @@ export class App {
       res.setHeader("Access-Control-Allow-Credentials", "true");
       res.setHeader(
         "Access-Control-Allow-Headers",
-        "Authorization, Origin, X-Requested-With, Content-Type, Accept"
+        "Authorization, Origin, X-Requested-With, Content-Type, Accept, X-XSRF-TOKEN"
       );
       res.setHeader(
         "Access-Control-Allow-Methods",
