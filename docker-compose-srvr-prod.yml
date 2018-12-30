@@ -15,6 +15,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - /etc/letsencrypt/live/api.ch.ckl.st:/etc/letsencrypt/live/api.ch.ckl.st
+      - /etc/letsencrypt/live/api.ch.ckl.st/fullchain.pem:/etc/letsencrypt/live/api.ch.ckl.st/fullchain.pem
+      - /etc/letsencrypt/live/api.ch.ckl.st/privkey.pem:/etc/letsencrypt/live/api.ch.ckl.st/privkey.pem
       - /data/letsencrypt:/data/letsencrypt
       - /home/user-images:/dist/public/user-images
