@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as multer from "multer";
+import * as fs from "fs";
 
 export class UserImageController {
   public static imageMimeTypeMap = {
@@ -22,6 +23,16 @@ export class UserImageController {
         process.env.NODE_ENV === "dev"
           ? "src/public/user-images"
           : "public/user-images";
+
+      console.log(
+        "*** public/user-images ***",
+        fs.existsSync("public/user-images")
+      );
+      console.log(
+        "*** dist/public/user-images ***",
+        fs.existsSync("dist/public/user-images")
+      );
+
       cb(error, dest);
     },
     filename(
