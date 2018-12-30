@@ -38,13 +38,18 @@ export class App {
   }
 
   private _expressConfig(): void {
+    const allowedOrigins = ["https://ch.ckl.st"];
+    if (process.env.NODE_ENV === "dev") {
+      allowedOrigins.push("http://localhost:4200");
+    }
+
     this.express.set("views", path.join(__dirname, "..", "public"));
     this.express.set("view engine", "html");
     this.express.engine("html", function(path: any, options: any, cb: any) {
       fs.readFile(path, "utf-8", cb);
     });
     const corsConfig = {
-      origin: "https://ch.ckl.st",
+      origin: allowedOrigins,
       methods: ["POST", "PUT", "GET", "DELETE", "OPTIONS"],
       allowedHeaders: [
         "Authorization",
