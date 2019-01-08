@@ -1,8 +1,12 @@
 const shell = require("shelljs");
 
-shell.rm("-Rf", "dist/");
-shell.mkdir("dist");
-shell.cp("-R", "src/public/", "dist/public/");
+if (!shell.test('-d', "dist")) {
+    shell.mkdir("dist");
+}
+if (!shell.test('-d', "dist/public")) {
+    shell.mkdir("dist/public");
+}
+shell.cp("-f","src/public/*", "dist/public/");
 
 if (process.env.NODE_ENV === "prod") {
     if (!shell.test('-d', "dist/public/user-images")) {
