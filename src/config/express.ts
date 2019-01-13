@@ -11,6 +11,10 @@ import * as dotenv from "dotenv";
 import * as lusca from "lusca";
 import * as mongo from "connect-mongo";
 import * as cors from "cors";
+import * as helmet from "helmet";
+import * as rateLimit from "express-rate-limit";
+import * as expressSanitizer from "express-sanitizer";
+import * as mongoSanitize from "express-mongo-sanitize";
 
 import { Db } from "./db";
 // import { MongoStoreFactory } from "connect-mongo";
@@ -42,6 +46,10 @@ export class App {
     if (process.env.NODE_ENV === "dev" || process.env.SERVER === "local") {
       allowedOrigins.push("http://localhost:4200");
     }
+    const limiter = rateLimit({
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100 // limit each IP to 100 requests per windowMs
+    });
 
     this.express.set("views", path.join(__dirname, "..", "public"));
     this.express.set("view engine", "html");
@@ -72,6 +80,14 @@ export class App {
         type: "application/x-www-form-urlencoded"
       })
     );
+    this.express.use(expressSanitizer());
+    this.express.use(
+      mongoSanitize({
+        replaceWith: "_"
+      })
+    );
+    this.express.use(limiter);
+    // required by lusca: https://www.npmjs.com/package/lusca
     this.express.use(
       expressSession({
         resave: true,
@@ -82,6 +98,7 @@ export class App {
           autoReconnect: true
         }),
         cookie: {
+          httpOnly: process.env.NODE_ENV === "prod",
           secure: process.env.NODE_ENV === "prod"
         }
       })
@@ -106,6 +123,8 @@ export class App {
         referrerPolicy: "same-origin"
       })
     );
+    this.express.use(helmet.hidePoweredBy());
+    this.express.use(helmet.ieNoOpen());
 
     this.express.use((req, res, next) => {
       res.locals.user = req.user;
