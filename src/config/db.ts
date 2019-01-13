@@ -13,7 +13,10 @@ export class Db {
 
   public connect(): void {
     mongoose
-      .connect(this.getDbUrl(), { useNewUrlParser: true })
+      .connect(
+        this.getDbUrl(),
+        { useNewUrlParser: true }
+      )
       .then(() => {
         this._log.info("mLab Connected");
       })
@@ -31,23 +34,9 @@ export class Db {
     });
   }
 
-  private _getDb(): string {
-    if (!this._dbName) {
-      switch (process.env.NODE_ENV) {
-        case "test":
-        case "dev":
-        case "prod":
-          this._dbName = "checklist";
-          break;
-        default:
-          this._dbName = "checklist";
-      }
-    }
-
-    return this._dbName;
-  }
-
   public getDbUrl(): string {
-    return process.env.DB_URI + this._getDb();
+    return process.env.NODE_ENV === "prod"
+      ? process.env.DB_PROD_URI
+      : process.env.DB_URI;
   }
 }
