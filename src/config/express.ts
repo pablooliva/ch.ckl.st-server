@@ -39,7 +39,7 @@ export class App {
 
   private _expressConfig(): void {
     const allowedOrigins = ["https://ch.ckl.st"];
-    if (process.env.NODE_ENV === "dev") {
+    if (process.env.NODE_ENV === "dev" || process.env.SERVER === "local") {
       allowedOrigins.push("http://localhost:4200");
     }
 
