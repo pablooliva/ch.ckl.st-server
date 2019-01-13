@@ -1,6 +1,6 @@
 # ch.ckl.st server
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpablooliva%2Fch.ckl.st-server.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpablooliva%2Fch.ckl.st-server?ref=badge_shield)
+[![Known Vulnerabilities](https://snyk.io/test/github/pablooliva/ch.ckl.st-server/badge.svg?targetFile=package.json)](https://snyk.io/test/github/pablooliva/ch.ckl.st-server?targetFile=package.json) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fpablooliva%2Fch.ckl.st-server.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fpablooliva%2Fch.ckl.st-server?ref=badge_shield)
 
 ## About
 
