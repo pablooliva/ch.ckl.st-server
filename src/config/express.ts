@@ -86,7 +86,9 @@ export class App {
         replaceWith: "_"
       })
     );
-    this.express.use(limiter);
+    if (process.env.NODE_ENV !== "dev" && process.env.SERVER !== "local") {
+      this.express.use(limiter);
+    }
     // required by lusca: https://www.npmjs.com/package/lusca
     this.express.use(
       expressSession({
