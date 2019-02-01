@@ -7,7 +7,8 @@ export class UserImageController {
     "image/jpeg": "jpg",
     "image/jpg": "jpg",
     "image/gif": "gif",
-    "image/svg": "svg"
+    "image/svg": "svg",
+    "image/svg+xml": "svg"
   };
 
   public static storage = multer.diskStorage({
