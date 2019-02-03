@@ -73,9 +73,12 @@ export class App {
     this.express.use(cors(corsConfig));
     this.express.use(logger("dev"));
     this.express.use(cookieParser());
-    this.express.use(bodyParser.json({ type: "application/json" }));
+    this.express.use(
+      bodyParser.json({ limit: "50mb", type: "application/json" })
+    );
     this.express.use(
       bodyParser.urlencoded({
+        limit: "50mb",
         extended: true,
         type: "application/x-www-form-urlencoded"
       })
