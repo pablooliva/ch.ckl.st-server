@@ -38,7 +38,7 @@
     "express-validator": "5.3.1",
     "fs": "0.0.1-security",
     "helmet": "3.15.0",
-    "jsonwebtoken": "8.4.0",
+    "jsonwebtoken": "8.5.0",
     "lodash": "4.17.11",
     "lusca": "1.6.1",
     "mongoose": "5.4.8",
