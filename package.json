@@ -19,7 +19,9 @@
     "prod": "NODE_ENV=prod npm run build && NODE_ENV=prod node dist/server",
     "dev": "NODE_ENV=dev nodemon",
     "test": "NODE_ENV=test npm run build && mocha dist/**/*.spec.js",
-    "prettier": "prettier --parser typescript --write '**/*.ts'"
+    "prettier": "prettier --parser typescript --write '**/*.ts'",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "accesscontrol": "2.2.1",
@@ -48,7 +50,8 @@
     "passport-jwt": "4.0.0",
     "passport-local": "1.0.0",
     "serve-favicon": "2.5.0",
-    "winston": "3.2.1"
+    "winston": "3.2.1",
+    "snyk": "^1.192.3"
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.2",
@@ -84,8 +87,7 @@
     "supertest": "3.4.2",
     "ts-node": "8.0.2",
     "tslint": "5.13.1",
-    "typescript": "3.3.3333",
-    "snyk": "1.135.1"
+    "typescript": "3.3.3333"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -97,5 +99,6 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  }
+  },
+  "snyk": true
 }
