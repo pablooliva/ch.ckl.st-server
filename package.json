@@ -85,7 +85,7 @@
     "ts-node": "8.0.2",
     "tslint": "5.13.1",
     "typescript": "3.3.3333",
-    "snyk": "1.135.1"
+    "snyk": "1.271.0"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
