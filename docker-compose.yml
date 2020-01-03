@@ -6,16 +6,16 @@ services:
       dockerfile: Dockerfile-dev
     command: npm run dev
     volumes:
-      - .:/app
-      - /home/pablo/Documents/Apps/ch.ckl.st/user-images:/app/src/public/user-images
+      - '.:/app'
+      - '/home/pablo/Documents/Apps/ch.ckl.st/user-images:/app/src/public/user-images'
     ports:
-      - "3000:3000"
-      - "9229:9229"
+      - '3000:3000'
+      - '9229:9229'
   app-stage:
-    image: pablooliva/ch.ckl.st-server:latest
+    image: 'pablooliva/ch.ckl.st-server:latest'
     env_file: src/config/.env
     environment:
       - SERVER=local
     command: npm run prod
     ports:
-      - "3000:3000"
+      - '3000:3000'
