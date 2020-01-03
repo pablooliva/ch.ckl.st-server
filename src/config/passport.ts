@@ -30,20 +30,30 @@ export class PassportConfig {
     );
   }
 
-  public static isAuthenticated(req: Request, res: Response, next: NextFunction): any {
+  public static isAuthenticated(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): any {
     if (req.isAuthenticated()) {
       return next();
     } else {
       return res
         .status(422)
-        .json({ errors: "Can't touch this... when you are not authenticated." });
+        .json({
+          errors: "Can't touch this... when you are not authenticated."
+        });
     }
   }
 
-  public static isAuthorized(req: Request, res: Response, next: NextFunction): any {
+  public static isAuthorized(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): any {
     const provider = req.path.split("/").slice(-1)[0];
 
-    if (_.find(req.user.tokens, { kind: provider })) {
+    if (_.find(req["user"]["tokens"], { kind: provider })) {
       next();
     } else {
       res.sendStatus(403).json({ errors: "User is not authorized for this." });

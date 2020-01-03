@@ -13,10 +13,10 @@ export class Db {
 
   public connect(): void {
     mongoose
-      .connect(
-        this.getDbUrl(),
-        { useNewUrlParser: true }
-      )
+      .connect(this.getDbUrl(), {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      })
       .then(() => {
         this._log.info("mLab Connected");
       })
