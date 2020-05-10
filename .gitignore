@@ -33,7 +33,6 @@ node_modules/
 # dotenv environment variables file
 # API keys and secrets
 .env
-src/config/certs/
 
 #local SSL certs
 src/config/certs
@@ -45,3 +44,5 @@ src/config/certs
 
 #Build
 dist/
+
+mongo/

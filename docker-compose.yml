@@ -1,9 +1,10 @@
-version: '3'
+version: '3.7'
 services:
   app-dev:
     build:
       context: .
-      dockerfile: Dockerfile-dev
+      dockerfile: docker/node/dev/Dockerfile
+    container_name: nodejs
     command: npm run dev
     volumes:
       - '.:/app'
@@ -11,6 +12,10 @@ services:
     ports:
       - '3000:3000'
       - '9229:9229'
+    links:
+      - mongo
+    networks:
+      - chcklst-internal
   app-stage:
     image: 'pablooliva/ch.ckl.st-server:latest'
     env_file: src/config/.env
@@ -19,3 +24,18 @@ services:
     command: npm run prod
     ports:
       - '3000:3000'
+  mongo:
+    build: docker/mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - '27017:27017'
+    volumes:
+    - './mongo/db:/data/db'
+    - './mongo/dump:/dump'
+    env_file: src/config/.env
+    networks:
+      - chcklst-internal
+networks:
+  chcklst-internal:
+    name: chcklst-net
