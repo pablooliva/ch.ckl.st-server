@@ -18,10 +18,10 @@ export class Db {
         useUnifiedTopology: true
       })
       .then(() => {
-        this._log.info("mLab Connected");
+        this._log.info("mongo Connected");
       })
       .catch(err => {
-        this._log.error("No connection to mLab: " + err);
+        this._log.error("No connection to mongo: " + err);
       });
 
     mongoose.connection.on("error", (err: Error) => {
@@ -37,6 +37,6 @@ export class Db {
   public getDbUrl(): string {
     return process.env.NODE_ENV === "prod"
       ? process.env.DB_PROD_URI
-      : process.env.DB_URI;
+      : process.env.DB_DEV_URI;
   }
 }

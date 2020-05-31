@@ -1,6 +1,6 @@
 FROM node:10-alpine
 WORKDIR /app
-COPY ../../.. /app
+COPY . /app
 RUN npm install
 EXPOSE 3000
 EXPOSE 9229

@@ -4,7 +4,9 @@ services:
     build:
       context: .
       dockerfile: docker/node/dev/Dockerfile
-    container_name: nodejs
+    container_name: chcklst-nodejs
+    depends_on:
+      - mongo-dev
     command: npm run dev
     volumes:
       - '.:/app'
@@ -18,21 +20,25 @@ services:
       - chcklst-internal
   app-stage:
     image: 'pablooliva/ch.ckl.st-server:latest'
+    container_name: chcklst-nodejs-staging
+    depends_on:
+      - mongo-dev
     env_file: src/config/.env
     environment:
       - SERVER=local
     command: npm run prod
     ports:
       - '3000:3000'
-  mongo:
+  mongo-dev:
     build: docker/mongo
-    container_name: mongodb
+    container_name: chcklst-mongodb
     restart: always
     ports:
       - '27017:27017'
     volumes:
-    - './mongo/db:/data/db'
+    - './mongo/db/dev:/data/db'
     - './mongo/dump:/dump'
+    - './src/config/secrets/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js'
     env_file: src/config/.env
     networks:
       - chcklst-internal

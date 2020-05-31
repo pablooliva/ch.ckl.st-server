@@ -2,6 +2,8 @@ version: '3'
 services:
   app-prod:
     image: pablooliva/ch.ckl.st-server:latest
+    depends_on:
+      - mongo-prod
     deploy:
       replicas: 1
       resources:
@@ -11,11 +13,37 @@ services:
       restart_policy:
         condition: on-failure
     command: npm run prod
-    env_file: ./.env
     ports:
       - "443:443"
+    expose:
+      - 443
     volumes:
       - /etc/letsencrypt/live/api.ch.ckl.st/fullchain.pem:/etc/letsencrypt/live/api.ch.ckl.st/fullchain.pem
       - /etc/letsencrypt/live/api.ch.ckl.st/privkey.pem:/etc/letsencrypt/live/api.ch.ckl.st/privkey.pem
       - /data/letsencrypt:/data/letsencrypt
       - /home/user-images:/app/dist/public/user-images
+    env_file: ./.env
+    environment:
+      VIRTUAL_HOST: api.ch.ckl.st
+    networks:
+      - chcklst-internal
+  mongo-prod:
+    build: docker/mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    expose:
+      - 27017
+    volumes:
+      - './mongo/db/prod:/data/db'
+      - './mongo/dump:/dump'
+      - './src/config/secrets/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js'
+    env_file: ./.env
+    networks:
+      - chcklst-internal
+networks:
+  chcklst-internal:
+    name: chcklst-net
+  default:
+    external:
+      name: nginx-proxy
