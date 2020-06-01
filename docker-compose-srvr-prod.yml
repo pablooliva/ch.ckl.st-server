@@ -22,8 +22,6 @@ services:
       VIRTUAL_HOST: api.ch.ckl.st
       LETSENCRYPT_HOST: api.ch.ckl.st
       LETSENCRYPT_EMAIL: pablo@qecept.com
-    networks:
-      - chcklst-internal
   mongo-prod:
     image: mongo:4.2.6
     restart: always
@@ -36,11 +34,7 @@ services:
       - './mongo/dump:/dump'
       - './src/config/secrets/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js'
     env_file: ./.env
-    networks:
-      - chcklst-internal
 networks:
-  chcklst-internal:
-    name: chcklst-net
   default:
     external:
       name: nginx-proxy
