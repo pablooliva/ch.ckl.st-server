@@ -27,3 +27,4 @@ src/config/secrets
 dist/
 
 mongo/
+src/public/user-images/

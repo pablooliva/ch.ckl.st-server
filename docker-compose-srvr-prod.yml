@@ -16,7 +16,7 @@ services:
     expose:
       - 80
     volumes:
-      - /home/user-images:/app/dist/public/user-images
+      - /home/chcklst/server/user-images:/app/dist/public/user-images
     env_file: ./.env
     environment:
       VIRTUAL_HOST: api.ch.ckl.st
