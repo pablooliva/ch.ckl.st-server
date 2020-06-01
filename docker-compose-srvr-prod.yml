@@ -2,6 +2,7 @@ version: '3'
 services:
   app-prod:
     image: pablooliva/ch.ckl.st-server:latest
+    container_name: chcklst-nodejs
     depends_on:
       - mongo-prod
     deploy:
@@ -24,6 +25,7 @@ services:
       LETSENCRYPT_EMAIL: pablo@qecept.com
   mongo-prod:
     image: mongo:4.2.6
+    container_name: chcklst-mongodb
     restart: always
     ports:
       - '27017:27017'
