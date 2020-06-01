@@ -25,7 +25,7 @@ services:
     networks:
       - chcklst-internal
   mongo-prod:
-    build: docker/mongo
+    image: mongo:4.2.6
     restart: always
     ports:
       - '27017:27017'

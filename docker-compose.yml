@@ -28,7 +28,7 @@ services:
     ports:
       - '3000:3000'
   mongo-dev:
-    build: docker/mongo
+    image: mongo:4.2.6
     container_name: chcklst-mongodb
     restart: always
     ports:
