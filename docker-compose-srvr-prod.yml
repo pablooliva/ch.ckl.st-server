@@ -22,8 +22,6 @@ services:
       VIRTUAL_HOST: api.ch.ckl.st
       LETSENCRYPT_HOST: api.ch.ckl.st
       LETSENCRYPT_EMAIL: pablo@qecept.com
-    links:
-      - mongo-prod
     networks:
       - chcklst-internal
   mongo-prod:
