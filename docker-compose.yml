@@ -3,7 +3,7 @@ services:
   app-dev:
     build:
       context: .
-      dockerfile: docker/node/dev/Dockerfile
+      dockerfile: Dockerfile-dev
     container_name: chcklst-nodejs
     depends_on:
       - mongo-dev
