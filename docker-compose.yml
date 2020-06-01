@@ -15,7 +15,7 @@ services:
       - '3000:3000'
       - '9229:9229'
     links:
-      - mongo
+      - mongo-dev
     networks:
       - chcklst-internal
   app-stage:

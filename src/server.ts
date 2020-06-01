@@ -5,28 +5,19 @@ import { App } from "./config/express";
 import { ClstLogger } from "./config/logger";
 
 const log = ClstLogger.log();
-const app = new App().express;
-const port = process.env.PORT || 3000;
-const sslPort = process.env.SSL_PORT || 443;
-const sslPath = "/etc/letsencrypt/live/api.ch.ckl.st/";
-let server;
-let listeningPort;
-
-if (process.env.NODE_ENV === "prod" && process.env.SERVER !== "local") {
-  const serverOptions = {
-    key: fs.readFileSync(sslPath + "privkey.pem"),
-    cert: fs.readFileSync(sslPath + "fullchain.pem")
-  };
-  server = <any>https.createServer(serverOptions, app);
-  listeningPort = sslPort;
-} else {
-  server = app;
-  listeningPort = port;
-}
+const devPort = 3000;
+const prodPort = 80;
+const server = new App().express;
+const listeningPort =
+  process.env.NODE_ENV === "prod" && process.env.SERVER !== "local"
+    ? prodPort
+    : devPort;
 
 server.listen(listeningPort, (err: Error) => {
   if (err) {
     return log.error(" *** Server error *** " + err.toString());
   }
-  log.info(`Express server listening on port ${listeningPort}. Environment: ${process.env.NODE_ENV}.`);
+  log.info(
+    `Express server listening on port ${listeningPort}. Environment: ${process.env.NODE_ENV}.`
+  );
 });

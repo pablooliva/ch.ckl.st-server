@@ -13,18 +13,17 @@ services:
       restart_policy:
         condition: on-failure
     command: npm run prod
-    ports:
-      - "443:443"
     expose:
-      - 443
+      - 80
     volumes:
-      - /etc/letsencrypt/live/api.ch.ckl.st/fullchain.pem:/etc/letsencrypt/live/api.ch.ckl.st/fullchain.pem
-      - /etc/letsencrypt/live/api.ch.ckl.st/privkey.pem:/etc/letsencrypt/live/api.ch.ckl.st/privkey.pem
-      - /data/letsencrypt:/data/letsencrypt
       - /home/user-images:/app/dist/public/user-images
     env_file: ./.env
     environment:
       VIRTUAL_HOST: api.ch.ckl.st
+      LETSENCRYPT_HOST: api.ch.ckl.st
+      LETSENCRYPT_EMAIL: pablo@qecept.com
+    links:
+      - mongo-prod
     networks:
       - chcklst-internal
   mongo-prod:
