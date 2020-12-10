@@ -73,7 +73,7 @@
     "@types/shelljs": "0.8.6",
     "@types/winston": "2.4.4",
     "husky": "3.1.0",
-    "lint-staged": "9.5.0",
+    "lint-staged": "10.5.3",
     "nodemon": "2.0.2",
     "prettier": "1.19.1",
     "shelljs": "0.8.3",
