@@ -35,7 +35,7 @@
     "express-rate-limit": "5.0.0",
     "express-sanitizer": "1.0.5",
     "express-session": "1.17.0",
-    "express-validator": "6.3.1",
+    "express-validator": "6.15.0",
     "fs": "0.0.1-security",
     "helmet": "3.21.2",
     "jsonwebtoken": "8.5.1",
